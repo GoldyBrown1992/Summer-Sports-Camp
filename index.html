@@ -886,6 +886,32 @@
             ];
             
             const messageIndex = Math.floor(animationFrame / 250) % messages.length;
+            // Draw camp info box in top left corner
+ctx.save();
+
+// Box background
+ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+ctx.fillRect(10, 10, 240, 100);
+
+// Box border
+ctx.strokeStyle = '#000';
+ctx.lineWidth = 3;
+ctx.strokeRect(10, 10, 240, 100);
+
+// Small header
+ctx.font = 'bold 14px Arial';
+ctx.fillStyle = '#FF6347';
+ctx.textAlign = 'left';
+ctx.fillText('CAMP INFO', 20, 30);
+
+// Camp info text
+ctx.fillStyle = '#000';
+ctx.font = 'bold 12px Arial';
+ctx.fillText('DATES: Aug 16 - Aug 30', 20, 55);
+ctx.fillText('LOCATION: Queens Park', 20, 75);
+ctx.fillText('FEE: $200', 20, 95);
+
+ctx.restore();
             ctx.strokeText(messages[messageIndex], canvas.width / 2, 50);
             ctx.fillText(messages[messageIndex], canvas.width / 2, 50);
             ctx.restore();
