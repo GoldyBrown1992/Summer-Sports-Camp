@@ -408,7 +408,7 @@
                 
                 <div class="form-group">
                     <label for="age">AGE</label>
-                    <input type="number" id="age" name="properties[Age]" min="1" max="100" required>
+                    <input type="number" id="age" name="properties[Age]" min="1" required>
                 </div>
                 
                 <div class="form-group">
@@ -453,14 +453,14 @@
     </div>
 
     <script>
-        // IMPORTANT: Configure your Shopify settings here
+        // Configure your Shopify settings
         const SHOPIFY_CONFIG = {
-    store_domain: 'kuibri-ev.myshopify.com',
-    variant_id: '50948336910628', // ← Your actual variant ID
-    redirect_to_cart: true
-};
+            store_domain: 'kuibri-ev.myshopify.com',
+            variant_id: '50948336910628',
+            redirect_to_cart: true
+        };
 
-        // Canvas Animation
+        // Canvas Animation Setup
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         ctx.imageSmoothingEnabled = false;
@@ -583,13 +583,14 @@
             }
         }
 
-        // Draw Goldy Brown (matching the provided artwork style)
+        // Draw Goldy Brown
         function drawGoldy() {
             const x = goldy.x;
             const y = goldy.y;
             
             // Shadow
             ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.beginPath();
             ctx.ellipse(x, y + 50, 30, 10, 0, 0, Math.PI * 2);
             ctx.fill();
             
@@ -637,7 +638,7 @@
             // Hairline details
             ctx.fillRect(x - 25, y - 45, 50, 5);
             
-            // Eyes (cartoon style like in the image)
+            // Eyes (cartoon style)
             ctx.fillStyle = '#fff';
             ctx.fillRect(x - 15, y - 40, 12, 15);
             ctx.fillRect(x + 3, y - 40, 12, 15);
@@ -700,6 +701,7 @@
             
             // Ball shadow
             ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.beginPath();
             ctx.ellipse(ball.x, ball.y + 15, ball.radius, ball.radius/3, 0, 0, Math.PI * 2);
             ctx.fill();
             
@@ -719,10 +721,10 @@
             const pattern = 5;
             for (let i = 0; i < pattern; i++) {
                 const angle = (Math.PI * 2 / pattern) * i;
-                const x = Math.cos(angle) * ball.radius * 0.5;
-                const y = Math.sin(angle) * ball.radius * 0.5;
+                const px = Math.cos(angle) * ball.radius * 0.5;
+                const py = Math.sin(angle) * ball.radius * 0.5;
                 ctx.beginPath();
-                ctx.arc(x, y, ball.radius * 0.3, 0, Math.PI * 2);
+                ctx.arc(px, py, ball.radius * 0.3, 0, Math.PI * 2);
                 ctx.fill();
             }
             
@@ -942,90 +944,103 @@
             playSound(2000, 0.1);
             setTimeout(() => playSound(1500, 0.1), 50);
         });
-        // Around line 935-945, add this:
-
-// Function to show success animation
-function showSuccessAnimation() {
-    const successMsg = document.getElementById('successMessage');
-    successMsg.style.display = 'block';
-    
-    // Hide after 3 seconds
-    setTimeout(() => {
-        successMsg.style.display = 'none';
-    }, 3000);
-}
-
-// Form submission handler for Shopify (line 946)
-document.getElementById('campForm').addEventListener('submit', async function(e) {
-    // ... rest of your code
+        
+        // Function to show success animation
+        function showSuccessAnimation() {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'block';
+            
+            // Hide after 3 seconds
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+            }, 3000);
+        }
         
         // Form submission handler for Shopify
         document.getElementById('campForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(this);
-    const submitBtn = document.querySelector('.submit-btn');
-    const originalText = submitBtn.innerHTML;
-    
-    // Show loading
-    submitBtn.innerHTML = '<span style="font-size: 0.8em">PROCESSING...</span>';
-    submitBtn.disabled = true;
-    
-    // Build cart URL parameters
-    const params = new URLSearchParams({
-        'id': SHOPIFY_CONFIG.variant_id,
-        'quantity': '1',
-        'properties[Player Name]': formData.get('properties[Player Name]'),
-        'properties[Age]': formData.get('properties[Age]'),
-        'properties[Phone Number]': formData.get('properties[Phone Number]'),
-        'properties[Email]': formData.get('properties[Email]'),
-        'properties[Sport]': formData.get('properties[Sport]')
-    });
-    
-    // Add other sport if selected
-    if (formData.get('properties[Sport]') === 'Other') {
-        const otherSport = formData.get('properties[Other Sport]');
-        if (otherSport) {
-            params.append('properties[Other Sport]', otherSport);
-        }
-    }
-    
-    try {
-        // Show success animation
-        showSuccessAnimation();
-        
-        // Wait for animation
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Build the cart URL
-        const cartUrl = `https://kuibri-ev.myshopify.com/cart/add?${params.toString()}`;
-        
-        // IMPORTANT: Check if we're in an iframe
-        if (window.self !== window.top) {
-            // We're in an iframe - open in parent window
-            window.top.location.href = cartUrl;
-        } else {
-            // We're not in an iframe - normal redirect
-            window.location.href = cartUrl;
-        }
-        
-    } catch (error) {
-        // If redirect fails due to iframe restrictions, open in new tab
-        console.error('Redirect failed, trying new tab:', error);
-        
-        const cartUrl = `https://kuibri-ev.myshopify.com/cart/add?${params.toString()}`;
-        
-        // Show message and open in new tab
-        alert('Opening checkout in a new tab. Please disable pop-up blocker if needed.');
-        window.open(cartUrl, '_blank');
-        
-        // Reset button
-        setTimeout(() => {
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        }, 3000);
-    }
-});
- </script>
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading
+            submitBtn.innerHTML = '<span style="font-size: 0.8em">PROCESSING...</span>';
+            submitBtn.disabled = true;
+            
+            // Build cart URL parameters
+            const params = new URLSearchParams({
+                'id': SHOPIFY_CONFIG.variant_id,
+                'quantity': '1',
+                'properties[Player Name]': formData.get('properties[Player Name]'),
+                'properties[Age]': formData.get('properties[Age]'),
+                'properties[Phone Number]': formData.get('properties[Phone Number]'),
+                'properties[Email]': formData.get('properties[Email]'),
+                'properties[Sport]': formData.get('properties[Sport]')
+            });
+            
+            // Add other sport if selected
+            if (formData.get('properties[Sport]') === 'Other') {
+                const otherSport = formData.get('properties[Other Sport]');
+                if (otherSport) {
+                    params.append('properties[Other Sport]', otherSport);
+                }
+            }
+            
+            try {
+                // Show success animation
+                showSuccessAnimation();
+                
+                // Play success sound
+                playSound(523, 0.15); // C
+                setTimeout(() => playSound(659, 0.15), 150); // E
+                setTimeout(() => playSound(784, 0.15), 300); // G
+                setTimeout(() => playSound(1047, 0.3), 450); // High C
+                
+                // Create celebration
+                for (let i = 0; i < 50; i++) {
+                    setTimeout(() => {
+                        const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
+                        particles.push(new Confetti(
+                            Math.random() * canvas.width,
+                            canvas.height / 2,
+                            colors[Math.floor(Math.random() * colors.length)]
+                        ));
+                    }, i * 30);
+                }
+                
+                // Wait for animation
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Build the cart URL
+                const cartUrl = `https://kuibri-ev.myshopify.com/cart/add?${params.toString()}`;
+                
+                // Check if we're in an iframe
+                if (window.self !== window.top) {
+                    // We're in an iframe - open in parent window
+                    window.top.location.href = cartUrl;
+                } else {
+                    // We're not in an iframe - normal redirect
+                    window.location.href = cartUrl;
+                }
+                
+            } catch (error) {
+                // If redirect fails due to iframe restrictions, open in new tab
+                console.error('Redirect failed, trying new tab:', error);
+                
+                const cartUrl = `https://kuibri-ev.myshopify.com/cart/add?${params.toString()}`;
+                
+                // Show message and open in new tab
+                alert('Opening checkout in a new tab. Please disable pop-up blocker if needed.');
+                window.open(cartUrl, '_blank');
+                
+                // Reset button
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 </html>
