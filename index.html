@@ -942,6 +942,22 @@
             playSound(2000, 0.1);
             setTimeout(() => playSound(1500, 0.1), 50);
         });
+        // Around line 935-945, add this:
+
+// Function to show success animation
+function showSuccessAnimation() {
+    const successMsg = document.getElementById('successMessage');
+    successMsg.style.display = 'block';
+    
+    // Hide after 3 seconds
+    setTimeout(() => {
+        successMsg.style.display = 'none';
+    }, 3000);
+}
+
+// Form submission handler for Shopify (line 946)
+document.getElementById('campForm').addEventListener('submit', async function(e) {
+    // ... rest of your code
         
         // Form submission handler for Shopify
         document.getElementById('campForm').addEventListener('submit', async function(e) {
@@ -1011,56 +1027,6 @@
     }
 });
             
-            // Build the cart parameters
-            const params = new URLSearchParams();
-            params.append('id', SHOPIFY_CONFIG.variant_id);
-            params.append('quantity', '1');
-            
-            // Add all form properties
-            params.append('properties[Player Name]', formData.get('properties[Player Name]'));
-            params.append('properties[Age]', formData.get('properties[Age]'));
-            params.append('properties[Phone Number]', formData.get('properties[Phone Number]'));
-            params.append('properties[Email]', formData.get('properties[Email]'));
-            params.append('properties[Sport]', formData.get('properties[Sport]'));
-            
-            // Add other sport if selected
-            if (formData.get('properties[Sport]') === 'Other' && formData.get('properties[Other Sport]')) {
-                params.append('properties[Other Sport]', formData.get('properties[Other Sport]'));
-            }
-            
-            // Show loading state
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = 'PROCESSING...';
-            submitBtn.disabled = true;
-            
-            // Show success message
-            const successMsg = document.getElementById('successMessage');
-            successMsg.style.display = 'block';
-            
-            // Play success sound
-            playSound(523, 0.15); // C
-            setTimeout(() => playSound(659, 0.15), 150); // E
-            setTimeout(() => playSound(784, 0.15), 300); // G
-            setTimeout(() => playSound(1047, 0.3), 450); // High C
-            
-            // Create celebration
-            for (let i = 0; i < 50; i++) {
-                setTimeout(() => {
-                    const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
-                    particles.push(new Confetti(
-                        Math.random() * canvas.width,
-                        canvas.height / 2,
-                        colors[Math.floor(Math.random() * colors.length)]
-                    ));
-                }, i * 30);
-            }
-            
-            // Redirect to Shopify cart with the item
-            setTimeout(() => {
-                window.location.href = `https://${SHOPIFY_CONFIG.store_domain}/cart/add?${params.toString()}`;
-            }, 2000);
-        });
-    </script>
+                </script>
 </body>
 </html>
