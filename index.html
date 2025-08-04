@@ -453,9 +453,9 @@
     </div>
 
     <script>
-        // Configure your Shopify settings
+        // Configure your Shopify settings - UPDATED WITH CORRECT DOMAIN
         const SHOPIFY_CONFIG = {
-            store_domain: 'kuibri-ev.myshopify.com',
+            store_domain: 'goldybrown.com',
             variant_id: '50948336910628',
             redirect_to_cart: true
         };
@@ -956,7 +956,7 @@
             }, 3000);
         }
         
-        // Form submission handler for Shopify
+        // Form submission handler for Shopify - UPDATED WITH CORRECT DOMAIN
         document.getElementById('campForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1012,8 +1012,8 @@
                 // Wait for animation
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
-                // Build the cart URL
-                const cartUrl = `https://kuibri-ev.myshopify.com/cart/add?${params.toString()}`;
+                // Build the cart URL - USING CORRECT DOMAIN
+                const cartUrl = `https://goldybrown.com/cart/add?${params.toString()}`;
                 
                 // Check if we're in an iframe
                 if (window.self !== window.top) {
@@ -1028,7 +1028,7 @@
                 // If redirect fails due to iframe restrictions, open in new tab
                 console.error('Redirect failed, trying new tab:', error);
                 
-                const cartUrl = `https://kuibri-ev.myshopify.com/cart/add?${params.toString()}`;
+                const cartUrl = `https://goldybrown.com/cart/add?${params.toString()}`;
                 
                 // Show message and open in new tab
                 alert('Opening checkout in a new tab. Please disable pop-up blocker if needed.');
