@@ -945,10 +945,71 @@
         
         // Form submission handler for Shopify
         document.getElementById('campForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const submitBtn = document.querySelector('.submit-btn');
+    const originalText = submitBtn.innerHTML;
+    
+    // Show loading
+    submitBtn.innerHTML = '<span style="font-size: 0.8em">PROCESSING...</span>';
+    submitBtn.disabled = true;
+    
+    // Build cart URL parameters
+    const params = new URLSearchParams({
+        'id': SHOPIFY_CONFIG.variant_id,
+        'quantity': '1',
+        'properties[Player Name]': formData.get('properties[Player Name]'),
+        'properties[Age]': formData.get('properties[Age]'),
+        'properties[Phone Number]': formData.get('properties[Phone Number]'),
+        'properties[Email]': formData.get('properties[Email]'),
+        'properties[Sport]': formData.get('properties[Sport]')
+    });
+    
+    // Add other sport if selected
+    if (formData.get('properties[Sport]') === 'Other') {
+        const otherSport = formData.get('properties[Other Sport]');
+        if (otherSport) {
+            params.append('properties[Other Sport]', otherSport);
+        }
+    }
+    
+    try {
+        // Show success animation
+        showSuccessAnimation();
         
-            const formData = new FormData(this);
-            const playerName = formData.get('properties[Player Name]');
+        // Wait for animation
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Build the cart URL
+        const cartUrl = `https://kuibri-ev.myshopify.com/cart/add?${params.toString()}`;
+        
+        // IMPORTANT: Check if we're in an iframe
+        if (window.self !== window.top) {
+            // We're in an iframe - open in parent window
+            window.top.location.href = cartUrl;
+        } else {
+            // We're not in an iframe - normal redirect
+            window.location.href = cartUrl;
+        }
+        
+    } catch (error) {
+        // If redirect fails due to iframe restrictions, open in new tab
+        console.error('Redirect failed, trying new tab:', error);
+        
+        const cartUrl = `https://kuibri-ev.myshopify.com/cart/add?${params.toString()}`;
+        
+        // Show message and open in new tab
+        alert('Opening checkout in a new tab. Please disable pop-up blocker if needed.');
+        window.open(cartUrl, '_blank');
+        
+        // Reset button
+        setTimeout(() => {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 3000);
+    }
+});
             
             // Build the cart parameters
             const params = new URLSearchParams();
