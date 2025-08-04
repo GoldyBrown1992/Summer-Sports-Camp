@@ -22,6 +22,18 @@
             image-rendering: crisp-edges;
         }
 
+        /* Prevent all zooming on mobile */
+        @media (max-width: 768px) {
+            * {
+                touch-action: pan-y !important;
+            }
+            
+            body {
+                touch-action: pan-y !important;
+                -ms-touch-action: pan-y !important;
+            }
+        }
+
         /* Animated Background */
         .background-elements {
             position: fixed;
@@ -229,15 +241,20 @@
             width: 100%;
             padding: 18px;
             font-family: 'Press Start 2P', cursive;
-            font-size: clamp(11px, 1.5vw, 16px);
+            font-size: 16px; /* Changed to 16px - prevents zoom on iOS */
             background: #fff;
             border: 5px solid #000;
             border-radius: 10px;
             outline: none;
             transition: all 0.3s;
             box-shadow: 0 4px 0 #000;
-            -webkit-appearance: none; /* Prevents zoom on iOS */
-            touch-action: manipulation; /* Prevents double-tap zoom */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            touch-action: manipulation;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            text-size-adjust: 100%;
         }
 
         input:focus, select:focus {
@@ -254,6 +271,18 @@
             background-position: right 15px center;
             background-size: 30px;
             padding-right: 55px;
+        }
+
+        /* Mobile specific input styles */
+        @media (max-width: 768px) {
+            input[type="text"],
+            input[type="number"],
+            input[type="tel"],
+            input[type="email"],
+            select {
+                font-size: 16px !important; /* Forces 16px on mobile */
+                -webkit-text-size-adjust: none;
+            }
         }
 
         /* Sport Options Container */
@@ -488,7 +517,7 @@
             goalHeight: 150
         };
 
-        // Cool Cat character
+        // Goldy Brown character
         const goldy = {
             x: 300,
             y: 250,
@@ -592,7 +621,7 @@
             }
         }
 
-        // Draw Cool Cat
+        // Draw Goldy Brown
         function drawGoldy() {
             const x = goldy.x;
             const y = goldy.y;
