@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goldy Brown Summer Sports Camp 2025</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cool Cat Summer Sports Camp 2025</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * {
@@ -236,6 +236,8 @@
             outline: none;
             transition: all 0.3s;
             box-shadow: 0 4px 0 #000;
+            -webkit-appearance: none; /* Prevents zoom on iOS */
+            touch-action: manipulation; /* Prevents double-tap zoom */
         }
 
         input:focus, select:focus {
@@ -383,9 +385,16 @@
     
     <header class="header">
         <div class="title-container">
-            <h1 class="title">GOLDY BROWN</h1>
+            <h1 class="title">Cool Cat</h1>
             <h2 class="subtitle">SUMMER SPORTS CAMP</h2>
             <div class="tagline">2025 REGISTRATION OPEN!</div>
+            
+            <!-- Camp info added here -->
+            <div style="margin-top: 20px; font-family: Arial, sans-serif; color: #fff; text-align: center; font-size: 16px; line-height: 1.6;">
+                <div style="font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">DATES: August 16 - August 30</div>
+                <div style="font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">LOCATION: Queens Park</div>
+                <div style="font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">REGISTRATION FEE: $200</div>
+            </div>
         </div>
     </header>
 
@@ -443,7 +452,7 @@
     </section>
 
     <footer class="footer">
-        <p>© 2025 GOLDY BROWN SUMMER SPORTS CAMP</p>
+        <p>© 2025 Cool Cat SUMMER SPORTS CAMP</p>
         <p>PLAY HARD, HAVE FUN!</p>
     </footer>
 
@@ -479,7 +488,7 @@
             goalHeight: 150
         };
 
-        // Goldy Brown character
+        // Cool Cat character
         const goldy = {
             x: 300,
             y: 250,
@@ -583,7 +592,7 @@
             }
         }
 
-        // Draw Goldy Brown
+        // Draw Cool Cat
         function drawGoldy() {
             const x = goldy.x;
             const y = goldy.y;
@@ -886,32 +895,6 @@
             ];
             
             const messageIndex = Math.floor(animationFrame / 250) % messages.length;
-            // Draw camp info box in top left corner
-ctx.save();
-
-// Box background
-ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
-ctx.fillRect(10, 10, 240, 100);
-
-// Box border
-ctx.strokeStyle = '#000';
-ctx.lineWidth = 3;
-ctx.strokeRect(10, 10, 240, 100);
-
-// Small header
-ctx.font = 'bold 14px Arial';
-ctx.fillStyle = '#FF6347';
-ctx.textAlign = 'left';
-ctx.fillText('CAMP INFO', 20, 30);
-
-// Camp info text
-ctx.fillStyle = '#000';
-ctx.font = 'bold 12px Arial';
-ctx.fillText('DATES: Aug 16 - Aug 30', 20, 55);
-ctx.fillText('LOCATION: Queens Park', 20, 75);
-ctx.fillText('FEE: $200', 20, 95);
-
-ctx.restore();
             ctx.strokeText(messages[messageIndex], canvas.width / 2, 50);
             ctx.fillText(messages[messageIndex], canvas.width / 2, 50);
             ctx.restore();
