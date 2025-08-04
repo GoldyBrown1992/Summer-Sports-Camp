@@ -12,6 +12,11 @@
             box-sizing: border-box;
         }
 
+        html {
+            height: 100%;
+            overflow-y: auto;
+        }
+
         body {
             font-family: 'Press Start 2P', cursive;
             background-color: #5C94FC;
@@ -19,6 +24,9 @@
             overflow-x: hidden;
             overflow-y: auto; /* CHANGED: Allow vertical scrolling */
             min-height: 100vh; /* ADDED: Ensure minimum height */
+            height: auto; /* ADDED: Allow body to expand */
+            position: relative; /* ADDED: For proper positioning */
+            padding-bottom: 100px; /* ADDED: Extra padding at bottom */
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
