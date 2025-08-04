@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goldy Brown Summer Sports Camp 2025</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>Goldy Brown's Auction - The Ultimate Luxury Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Bebas+Neue&family=Righteous&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
     <style>
         * {
             margin: 0;
@@ -13,55 +14,73 @@
         }
 
         body {
-            font-family: 'Press Start 2P', cursive;
-            background-color: #5C94FC;
-            color: #000;
+            font-family: 'Righteous', cursive;
+            background: linear-gradient(135deg, #87CEEB 0%, #4682B4 100%);
+            min-height: 100vh;
             overflow-x: hidden;
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
+            position: relative;
         }
 
-        /* Animated Background */
-        .background-elements {
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes fall {
+            from { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            to { transform: translateY(100vh) rotate(360deg); opacity: 0.5; }
+        }
+
+        @keyframes bounce-in {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes float-emoji {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-200px) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Floating elements */
+        .floating-money {
             position: fixed;
-            width: 100%;
-            height: 100%;
+            font-size: 3rem;
+            animation: fall 10s linear infinite;
             pointer-events: none;
-            overflow: hidden;
-        }
-
-        .floating-ball {
-            position: absolute;
-            font-size: 30px;
-            animation: floatBall 12s infinite linear;
-        }
-
-        @keyframes floatBall {
-            from {
-                transform: translateY(100vh) rotate(0deg);
-            }
-            to {
-                transform: translateY(-100px) rotate(360deg);
-            }
+            z-index: 1;
         }
 
         .cloud {
-            position: absolute;
+            position: fixed;
             width: 100px;
-            height: 40px;
-            background: #fff;
-            border-radius: 50px;
-            opacity: 0.6;
-            animation: drift 20s infinite ease-in-out;
+            height: 60px;
+            background: white;
+            border-radius: 100px;
+            opacity: 0.7;
+            animation: float 8s ease-in-out infinite;
+            z-index: 1;
         }
 
         .cloud::before,
         .cloud::after {
             content: '';
             position: absolute;
-            background: #fff;
-            border-radius: 50px;
+            background: white;
+            border-radius: 100px;
         }
 
         .cloud::before {
@@ -78,969 +97,925 @@
             right: 10px;
         }
 
-        @keyframes drift {
-            0%, 100% { transform: translateX(-100px); }
-            50% { transform: translateX(calc(100vw + 100px)); }
-        }
-
         /* Header */
         .header {
             text-align: center;
-            padding: 30px 20px;
-            background: linear-gradient(180deg, #5C94FC 0%, #4484FC 100%);
+            padding: 2rem;
             position: relative;
             z-index: 10;
         }
 
-        .title-container {
-            position: relative;
+        .main-title {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 5rem;
+            color: #000;
+            text-shadow: 3px 3px 0px #00FFFF;
+            transform: rotate(-2deg);
             display: inline-block;
-        }
-
-        .title {
-            font-size: clamp(28px, 5vw, 56px);
-            color: #FFD700;
-            text-shadow: 
-                6px 6px 0 #000,
-                -3px -3px 0 #000,
-                3px -3px 0 #000,
-                -3px 3px 0 #000,
-                3px 3px 0 #000;
-            margin-bottom: 15px;
-            letter-spacing: 2px;
-            animation: bounce 2s infinite ease-in-out;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            margin-bottom: 1rem;
         }
 
         .subtitle {
-            font-size: clamp(16px, 3vw, 28px);
-            color: #fff;
-            text-shadow: 
-                3px 3px 0 #000,
-                -2px -2px 0 #000,
-                2px -2px 0 #000,
-                -2px 2px 0 #000;
-            margin-bottom: 10px;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            letter-spacing: 3px;
         }
 
-        .tagline {
-            font-size: clamp(10px, 2vw, 16px);
-            color: #000;
-            background: #FFD700;
-            padding: 10px 20px;
-            border: 4px solid #000;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 10px;
-            box-shadow: 0 4px 0 #000;
-        }
-
-        /* Canvas Container */
-        .canvas-container {
-            width: 100%;
-            max-width: 1000px;
-            margin: 30px auto;
-            background: linear-gradient(to bottom, #87CEEB 0%, #7CB342 100%);
+        /* Timer Section */
+        .timer-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: linear-gradient(135deg, #87CEEB 0%, #5F9EA0 100%);
             border: 8px solid #000;
             border-radius: 20px;
-            box-shadow: 0 10px 0 #000;
+            padding: 2rem;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.3);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .timer-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.5rem;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            text-shadow: 3px 3px 0px #000;
+        }
+
+        .timer-display {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .time-unit {
+            background: #fff;
+            border: 4px solid #000;
+            border-radius: 10px;
+            padding: 1rem;
+            min-width: 100px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .time-unit:hover {
+            transform: rotate(0deg) scale(1.1);
+        }
+
+        .time-value {
+            font-size: 3rem;
+            color: #000080;
+            display: block;
+        }
+
+        .time-label {
+            font-size: 1rem;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        /* Bid Section */
+        .bid-section {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: linear-gradient(135deg, #228B22 0%, #006400 100%);
+            border: 8px solid #000;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.3);
+            animation: float 6s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        .bid-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            text-shadow: 3px 3px 0px #000;
+        }
+
+        .current-bid {
+            font-size: 1.5rem;
+            color: #FFD700;
+            margin-bottom: 1.5rem;
+        }
+
+        .bid-amount {
+            font-size: 3rem;
+            color: #FFD700;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .bid-button {
+            background: #FFD700;
+            color: #000;
+            border: 4px solid #000;
+            border-radius: 50px;
+            padding: 1rem 3rem;
+            font-size: 1.5rem;
+            font-family: 'Bebas Neue', cursive;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .bid-button:hover {
+            transform: scale(1.1) rotate(-2deg);
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.3);
+        }
+
+        .bid-button .emoji {
+            animation: pulse 1s infinite;
+        }
+
+        /* Video Section */
+        .video-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            background: #FFF8DC;
+            border: 8px solid #000;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 10px 10px 0px rgba(0,0,0,0.3);
+            animation: float 6s ease-in-out infinite;
+            animation-delay: 2s;
+        }
+
+        .video-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            color: #FF1493;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .video-placeholder {
+            background: #000;
+            height: 400px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
             overflow: hidden;
         }
 
-        canvas {
-            display: block;
-            width: 100%;
-            height: auto;
-            image-rendering: pixelated;
-        }
-
-        /* Form Container */
-        .form-section {
-            max-width: 700px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .form-container {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            border: 8px solid #000;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 0 #000;
-            position: relative;
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .form-title {
-            font-size: clamp(18px, 3vw, 28px);
-            text-align: center;
-            margin-bottom: 35px;
-            color: #000;
-            text-shadow: 3px 3px 0 #fff;
-        }
-
-        /* Sports ball decorations */
-        .sports-ball {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            font-size: 40px;
-            animation: rotate 3s infinite linear;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .sports-ball-1 { top: -30px; left: -30px; }
-        .sports-ball-2 { top: -30px; right: -30px; }
-
-        /* Form Elements */
-        .form-group {
-            margin-bottom: 30px;
-        }
-
-        label {
-            display: block;
-            font-size: clamp(11px, 1.5vw, 16px);
-            margin-bottom: 12px;
-            color: #000;
-            text-shadow: 1px 1px 0 #fff;
-        }
-
-        input, select {
-            width: 100%;
-            padding: 18px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: clamp(11px, 1.5vw, 16px);
-            background: #fff;
-            border: 5px solid #000;
-            border-radius: 10px;
-            outline: none;
-            transition: all 0.3s;
-            box-shadow: 0 4px 0 #000;
-        }
-
-        input:focus, select:focus {
-            background: #FFFACD;
-            transform: translateY(-3px);
-            box-shadow: 0 7px 0 #000;
-        }
-
-        select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='4' stroke-linecap='square'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 30px;
-            padding-right: 55px;
-        }
-
-        /* Sport Options Container */
-        .sport-options {
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 3px solid #000;
-            border-radius: 10px;
-        }
-
-        .sport-options.show {
-            display: block;
-            animation: expand 0.3s ease-out;
-        }
-
-        @keyframes expand {
-            from {
-                opacity: 0;
-                transform: scaleY(0);
-                transform-origin: top;
-            }
-            to {
-                opacity: 1;
-                transform: scaleY(1);
-            }
-        }
-
-        /* Submit Button */
-        .submit-btn {
-            width: 100%;
-            padding: 25px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: clamp(14px, 2.5vw, 22px);
-            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-            color: #fff;
-            border: 5px solid #000;
-            border-radius: 15px;
-            cursor: pointer;
-            position: relative;
-            box-shadow: 0 8px 0 #000;
-            transition: all 0.1s;
-            text-shadow: 3px 3px 0 #000;
-            letter-spacing: 1px;
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            cursor: pointer;
+            transition: transform 0.3s;
         }
 
-        .submit-btn::before {
-            content: '⚽';
-            font-size: 1.2em;
+        .play-button:hover {
+            transform: scale(1.2);
         }
 
-        .submit-btn:hover {
-            background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
-            transform: translateY(2px);
-            box-shadow: 0 6px 0 #000;
+        .play-button::after {
+            content: '▶';
+            font-size: 2rem;
+            color: #000;
+            margin-left: 5px;
         }
 
-        .submit-btn:active {
-            transform: translateY(8px);
-            box-shadow: none;
+        /* Info Grid */
+        .info-grid {
+            max-width: 1000px;
+            margin: 2rem auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 0 2rem;
         }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 50px 20px;
-            font-size: clamp(9px, 1.5vw, 14px);
-            color: #fff;
-            text-shadow: 2px 2px 0 #000;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .form-container {
-                padding: 25px;
-            }
-            
-            .canvas-container {
-                margin: 20px;
-            }
-            
-            input, select {
-                padding: 15px;
-            }
-        }
-
-        /* Success Animation */
-        @keyframes success {
-            0% { transform: scale(0) rotate(0deg); }
-            50% { transform: scale(1.2) rotate(180deg); }
-            100% { transform: scale(1) rotate(360deg); }
-        }
-
-        .success-message {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #4CAF50;
-            color: #fff;
-            padding: 30px 50px;
+        .info-card {
+            background: #FFD700;
             border: 8px solid #000;
             border-radius: 20px;
-            font-size: 24px;
+            padding: 1.5rem;
             text-align: center;
-            z-index: 1000;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .info-card:nth-child(2) { animation-delay: 0.5s; }
+        .info-card:nth-child(3) { animation-delay: 1s; }
+
+        .info-card:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+
+        .info-label {
+            font-size: 1.2rem;
+            color: #000;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            font-size: 2rem;
+            color: #FF1493;
+            font-weight: bold;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        /* Leaderboard */
+        .leaderboard {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
+            border: 8px solid #000;
+            border-radius: 20px;
+            padding: 1rem;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.3);
+            z-index: 100;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            max-width: 300px;
+        }
+
+        .leaderboard.collapsed {
+            width: auto;
+            padding: 0.5rem 1rem;
+        }
+
+        .leaderboard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .leaderboard-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .leaderboard.collapsed .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .leaderboard-content {
+            margin-top: 1rem;
+            display: block;
+        }
+
+        .leaderboard.collapsed .leaderboard-content {
             display: none;
-            animation: success 0.5s ease-out;
-            box-shadow: 0 10px 0 #000;
+        }
+
+        .leaderboard-item {
+            background: rgba(255,255,255,0.9);
+            border: 3px solid #000;
+            border-radius: 10px;
+            padding: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rank-badge {
+            font-size: 1.5rem;
+        }
+
+        .bidder-name {
+            flex: 1;
+            font-size: 1rem;
+            color: #000;
+        }
+
+        .bid-amount-small {
+            font-size: 1rem;
+            color: #FF1493;
+            font-weight: bold;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border: 8px solid #000;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.3);
+            animation: bounce-in 0.5s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            color: #FF1493;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .close-button {
+            font-size: 2rem;
+            cursor: pointer;
+            color: #000;
+            transition: transform 0.3s;
+        }
+
+        .close-button:hover {
+            transform: rotate(90deg);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 3px solid #000;
+            border-radius: 10px;
+            font-family: 'Righteous', cursive;
+            font-size: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            transform: scale(1.02);
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+        }
+
+        #card-element {
+            border: 3px solid #000;
+            border-radius: 10px;
+            padding: 1rem;
+            background: #f9f9f9;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: #228B22;
+            color: #fff;
+            border: 4px solid #000;
+            border-radius: 50px;
+            padding: 1rem;
+            font-size: 1.5rem;
+            font-family: 'Bebas Neue', cursive;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.3);
+        }
+
+        .submit-button:hover {
+            transform: scale(1.05);
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.3);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .success-emoji {
+            position: fixed;
+            font-size: 3rem;
+            pointer-events: none;
+            z-index: 2000;
+            animation: float-emoji 2s ease-out;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+                padding-right: 120px; /* Space for leaderboard */
+            }
+
+            .subtitle {
+                font-size: 1.5rem;
+            }
+
+            .timer-section,
+            .bid-section,
+            .video-section {
+                margin: 1rem;
+            }
+
+            .time-value {
+                font-size: 2rem;
+            }
+
+            .time-unit {
+                min-width: 70px;
+                padding: 0.5rem;
+            }
+
+            .leaderboard {
+                top: 100px; /* Move below title on mobile */
+                right: 10px;
+                max-width: 180px;
+                font-size: 0.85rem;
+            }
+            
+            .leaderboard.collapsed {
+                top: 20px; /* When collapsed, can be higher */
+                max-width: 100px;
+            }
+            
+            .leaderboard-title {
+                font-size: 1.2rem;
+            }
+            
+            .leaderboard-item {
+                padding: 0.3rem;
+                font-size: 0.8rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .video-placeholder {
+                height: 250px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="background-elements">
-        <div class="floating-ball" style="left: 10%; animation-delay: 0s;">⚽</div>
-        <div class="floating-ball" style="left: 30%; animation-delay: 2s;">🏀</div>
-        <div class="floating-ball" style="left: 50%; animation-delay: 4s;">🏈</div>
-        <div class="floating-ball" style="left: 70%; animation-delay: 6s;">⚾</div>
-        <div class="floating-ball" style="left: 90%; animation-delay: 8s;">🏐</div>
-        
-        <div class="cloud" style="top: 20%; left: -100px; animation-delay: 0s;"></div>
-        <div class="cloud" style="top: 60%; left: -100px; animation-delay: 10s;"></div>
-    </div>
+    <!-- Floating decorations -->
+    <div class="floating-money" style="top: -100px; left: 10%;">💰</div>
+    <div class="floating-money" style="top: -300px; left: 30%; animation-delay: 2s;">🪙</div>
+    <div class="floating-money" style="top: -500px; left: 50%; animation-delay: 4s;">💸</div>
+    <div class="floating-money" style="top: -700px; left: 70%; animation-delay: 6s;">💰</div>
+    <div class="floating-money" style="top: -900px; left: 90%; animation-delay: 8s;">🪙</div>
     
+    <div class="cloud" style="top: 10%; left: 5%;"></div>
+    <div class="cloud" style="top: 20%; right: 10%; animation-delay: 3s;"></div>
+    <div class="cloud" style="top: 50%; left: -100px; animation-delay: 5s;"></div>
+
+    <!-- Header -->
     <header class="header">
-        <div class="title-container">
-            <h1 class="title">GOLDY BROWN</h1>
-            <h2 class="subtitle">SUMMER SPORTS CAMP</h2>
-            <div class="tagline">2025 REGISTRATION OPEN!</div>
-        </div>
+        <h1 class="main-title">GOLDY BROWN'S AUCTION</h1>
+        <p class="subtitle">THE ULTIMATE LUXURY EXPERIENCE</p>
     </header>
 
-    <div class="canvas-container">
-        <canvas id="gameCanvas" width="1000" height="400"></canvas>
-    </div>
-
-    <section class="form-section">
-        <div class="form-container">
-            <div class="sports-ball sports-ball-1">⚽</div>
-            <div class="sports-ball sports-ball-2">🏀</div>
-            
-            <h2 class="form-title">JOIN THE TEAM!</h2>
-            
-            <form id="campForm" method="POST">
-                <div class="form-group">
-                    <label for="playerName">PLAYER NAME</label>
-                    <input type="text" id="playerName" name="properties[Player Name]" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="age">AGE</label>
-                    <input type="number" id="age" name="properties[Age]" min="1" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone">PHONE NUMBER</label>
-                    <input type="tel" id="phone" name="properties[Phone Number]" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">EMAIL</label>
-                    <input type="email" id="email" name="properties[Email]" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="sport">FAVORITE SPORT</label>
-                    <select id="sport" name="properties[Sport]" required>
-                        <option value="">CHOOSE YOUR SPORT</option>
-                        <option value="Soccer">SOCCER ⚽</option>
-                        <option value="Basketball">BASKETBALL 🏀</option>
-                        <option value="Hockey">HOCKEY 🏒</option>
-                        <option value="Other">OTHER SPORT</option>
-                    </select>
-                    
-                    <div id="otherSportContainer" class="sport-options">
-                        <label for="otherSport">WHAT SPORT DO YOU LOVE?</label>
-                        <input type="text" id="otherSport" name="properties[Other Sport]" placeholder="Type your sport here...">
-                    </div>
-                </div>
-                
-                <button type="submit" class="submit-btn">LET'S GO!</button>
-            </form>
+    <!-- Timer Section -->
+    <section class="timer-section">
+        <h2 class="timer-title">🎯 AUCTION ENDS IN 🎯</h2>
+        <div class="timer-display">
+            <div class="time-unit">
+                <span class="time-value" id="days">00</span>
+                <span class="time-label">Days</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-value" id="hours">00</span>
+                <span class="time-label">Hours</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-value" id="minutes">00</span>
+                <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-value" id="seconds">00</span>
+                <span class="time-label">Seconds</span>
+            </div>
         </div>
     </section>
 
-    <footer class="footer">
-        <p>© 2025 GOLDY BROWN SUMMER SPORTS CAMP</p>
-        <p>PLAY HARD, HAVE FUN!</p>
-    </footer>
+    <!-- Bid Section -->
+    <section class="bid-section">
+        <h2 class="bid-title">💎 PLACE YOUR BID! 💎</h2>
+        <div class="current-bid">
+            Current Highest Bid:
+            <div class="bid-amount">$<span id="currentBid">0</span></div>
+        </div>
+        <button class="bid-button" id="bidButton">
+            <span class="emoji">💰</span>
+            BID NOW!
+        </button>
+    </section>
 
-    <div class="success-message" id="successMessage">
-        <p>AWESOME!</p>
-        <p>SEE YOU ON THE FIELD!</p>
+    <!-- Video Section -->
+    <section class="video-section">
+        <h3 class="video-title">💧 UNVEIL THE DRIP 💧</h3>
+        <div class="video-placeholder">
+            <div class="play-button"></div>
+        </div>
+    </section>
+
+    <!-- Info Grid -->
+    <div class="info-grid">
+        <div class="info-card">
+            <div class="info-label">Starting Bid</div>
+            <div class="info-value">$1</div>
+        </div>
+        <div class="info-card">
+            <div class="info-label">Total Bids</div>
+            <div class="info-value" id="totalBids">0</div>
+        </div>
+        <div class="info-card">
+            <div class="info-label">Time Left</div>
+            <div class="info-value" id="quickTime">--:--:--</div>
+        </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard collapsed" id="leaderboard">
+        <div class="leaderboard-header">
+            <h3 class="leaderboard-title">👑 TOP BIDS</h3>
+            <span class="toggle-icon">▼</span>
+        </div>
+        <div class="leaderboard-content" id="leaderboardContent">
+            <!-- Leaderboard items will be populated here -->
+        </div>
+    </div>
+
+    <!-- Bid Modal -->
+    <div class="modal" id="bidModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">PLACE YOUR BID</h3>
+                <span class="close-button" id="closeBidModal">✕</span>
+            </div>
+            <form id="bidForm">
+                <div class="form-group">
+                    <label class="form-label" for="bidderName">Your Name</label>
+                    <input type="text" class="form-input" id="bidderName" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="bidderEmail">Email Address</label>
+                    <input type="email" class="form-input" id="bidderEmail" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="bidAmount">Bid Amount ($)</label>
+                    <input type="number" class="form-input" id="bidAmount" min="1" step="1" required>
+                    <div class="error-message" id="bidError"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Payment Details</label>
+                    <div id="card-element"></div>
+                    <div class="error-message" id="cardError"></div>
+                </div>
+                <button type="submit" class="submit-button" id="submitBid">SUBMIT BID</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">🎉 BID PLACED! 🎉</h3>
+                <span class="close-button" id="closeSuccessModal">✕</span>
+            </div>
+            <p style="text-align: center; font-size: 1.2rem; margin: 1rem 0;">
+                Your bid has been successfully placed!
+            </p>
+            <p style="text-align: center; color: #666;">
+                You're now in the running for this exclusive item.
+            </p>
+        </div>
     </div>
 
     <script>
-        // Configure your Shopify settings
-        const SHOPIFY_CONFIG = {
-            store_domain: 'kuibri-ev.myshopify.com',
-            variant_id: '50948336910628',
-            redirect_to_cart: true
-        };
+        // Global variables
+        let stripe;
+        let elements;
+        let cardElement;
+        let currentHighestBid = 0;
+        let totalBidCount = 0;
 
-        // Canvas Animation Setup
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        ctx.imageSmoothingEnabled = false;
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            fetchLeaderboardData();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            
+            // Delay Stripe initialization slightly
+            setTimeout(initializeStripe, 500);
+        });
 
-        // Game state
-        let animationFrame = 0;
-        let particles = [];
-
-        // Soccer field dimensions
-        const field = {
-            width: canvas.width,
-            height: canvas.height,
-            goalX: 750,
-            goalY: 150,
-            goalWidth: 200,
-            goalHeight: 150
-        };
-
-        // Goldy Brown character
-        const goldy = {
-            x: 300,
-            y: 250,
-            legAngle: 0,
-            kicking: false,
-            kickFrame: 0
-        };
-
-        // Soccer ball
-        const ball = {
-            x: 380,
-            y: 280,
-            vx: 0,
-            vy: 0,
-            radius: 15,
-            rotation: 0,
-            trail: []
-        };
-
-        // Confetti particle class
-        class Confetti {
-            constructor(x, y, color) {
-                this.x = x;
-                this.y = y;
-                this.vx = (Math.random() - 0.5) * 10;
-                this.vy = -Math.random() * 15 - 5;
-                this.color = color;
-                this.size = Math.random() * 10 + 5;
-                this.angle = Math.random() * Math.PI * 2;
-                this.angleVel = (Math.random() - 0.5) * 0.5;
-                this.opacity = 1;
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                this.vy += 0.5;
-                this.angle += this.angleVel;
-                this.opacity -= 0.02;
-            }
-
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.opacity;
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle);
-                ctx.fillStyle = this.color;
-                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
-                ctx.restore();
-            }
-        }
-
-        // Draw background and field
-        function drawField() {
-            // Sky
-            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-            gradient.addColorStop(0, '#87CEEB');
-            gradient.addColorStop(0.6, '#98D8E8');
-            gradient.addColorStop(1, '#7CB342');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // Setup all event listeners
+        function setupEventListeners() {
+            // Bid button
+            document.getElementById('bidButton').addEventListener('click', openBidModal);
             
-            // Soccer field
-            ctx.fillStyle = '#228B22';
-            ctx.fillRect(0, 200, canvas.width, 200);
+            // Modal close buttons
+            document.getElementById('closeBidModal').addEventListener('click', closeBidModal);
+            document.getElementById('closeSuccessModal').addEventListener('click', closeSuccessModal);
             
-            // Field lines
-            ctx.strokeStyle = '#fff';
-            ctx.lineWidth = 3;
+            // Leaderboard toggle
+            document.getElementById('leaderboard').addEventListener('click', toggleLeaderboard);
             
-            // Center line
-            ctx.beginPath();
-            ctx.moveTo(canvas.width / 2, 200);
-            ctx.lineTo(canvas.width / 2, 400);
-            ctx.stroke();
+            // Bid form submission
+            document.getElementById('bidForm').addEventListener('submit', handleBidSubmit);
             
-            // Center circle
-            ctx.beginPath();
-            ctx.arc(canvas.width / 2, 300, 50, 0, Math.PI * 2);
-            ctx.stroke();
-            
-            // Goal
-            ctx.strokeStyle = '#fff';
-            ctx.lineWidth = 6;
-            ctx.strokeRect(field.goalX, field.goalY, field.goalWidth, field.goalHeight);
-            
-            // Goal net
-            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-            ctx.lineWidth = 1;
-            for (let x = field.goalX; x <= field.goalX + field.goalWidth; x += 15) {
-                ctx.beginPath();
-                ctx.moveTo(x, field.goalY);
-                ctx.lineTo(x, field.goalY + field.goalHeight);
-                ctx.stroke();
-            }
-            for (let y = field.goalY; y <= field.goalY + field.goalHeight; y += 15) {
-                ctx.beginPath();
-                ctx.moveTo(field.goalX, y);
-                ctx.lineTo(field.goalX + field.goalWidth, y);
-                ctx.stroke();
-            }
-        }
-
-        // Draw Goldy Brown
-        function drawGoldy() {
-            const x = goldy.x;
-            const y = goldy.y;
-            
-            // Shadow
-            ctx.fillStyle = 'rgba(0,0,0,0.2)';
-            ctx.beginPath();
-            ctx.ellipse(x, y + 50, 30, 10, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Body (black shirt)
-            ctx.fillStyle = '#000';
-            ctx.fillRect(x - 25, y - 20, 50, 40);
-            
-            // Shorts (blue)
-            ctx.fillStyle = '#1E90FF';
-            ctx.fillRect(x - 20, y + 20, 40, 20);
-            
-            // Arms
-            ctx.fillStyle = '#8B4513';
-            if (goldy.kicking) {
-                // Kicking pose - arms out for balance
-                ctx.save();
-                ctx.translate(x - 25, y - 10);
-                ctx.rotate(-Math.PI / 4);
-                ctx.fillRect(-5, 0, 10, 30);
-                ctx.restore();
-                
-                ctx.save();
-                ctx.translate(x + 25, y - 10);
-                ctx.rotate(Math.PI / 4);
-                ctx.fillRect(-5, 0, 10, 30);
-                ctx.restore();
-            } else {
-                // Normal arms
-                ctx.fillRect(x - 30, y - 15, 10, 30);
-                ctx.fillRect(x + 20, y - 15, 10, 30);
-            }
-            
-            // Head
-            ctx.fillStyle = '#8B4513';
-            ctx.beginPath();
-            ctx.arc(x, y - 40, 25, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Hair (black, styled)
-            ctx.fillStyle = '#000';
-            ctx.beginPath();
-            ctx.arc(x, y - 45, 25, Math.PI, 0);
-            ctx.fill();
-            
-            // Hairline details
-            ctx.fillRect(x - 25, y - 45, 50, 5);
-            
-            // Eyes (cartoon style)
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(x - 15, y - 40, 12, 15);
-            ctx.fillRect(x + 3, y - 40, 12, 15);
-            
-            // Pupils
-            ctx.fillStyle = '#000';
-            ctx.fillRect(x - 11, y - 35, 6, 8);
-            ctx.fillRect(x + 7, y - 35, 6, 8);
-            
-            // Smile
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(x, y - 25, 8, 0, Math.PI);
-            ctx.stroke();
-            
-            // Legs with kicking animation
-            ctx.fillStyle = '#8B4513';
-            if (goldy.kicking && goldy.kickFrame > 5 && goldy.kickFrame < 15) {
-                // Kicking leg extended
-                ctx.save();
-                ctx.translate(x + 5, y + 40);
-                ctx.rotate(-Math.PI / 3);
-                ctx.fillRect(-5, 0, 10, 35);
-                // Foot
-                ctx.fillStyle = '#000';
-                ctx.fillRect(-7, 35, 14, 8);
-                ctx.restore();
-                
-                // Standing leg
-                ctx.fillStyle = '#8B4513';
-                ctx.fillRect(x - 15, y + 40, 10, 35);
-                ctx.fillStyle = '#000';
-                ctx.fillRect(x - 17, y + 75, 14, 8);
-            } else {
-                // Normal standing
-                const walkOffset = Math.sin(goldy.legAngle) * 5;
-                ctx.fillRect(x - 15, y + 40, 10, 35);
-                ctx.fillRect(x + 5, y + 40, 10, 35);
-                
-                // Shoes
-                ctx.fillStyle = '#000';
-                ctx.fillRect(x - 17, y + 75 + walkOffset, 14, 8);
-                ctx.fillRect(x + 3, y + 75 - walkOffset, 14, 8);
-            }
-        }
-
-        // Draw soccer ball
-        function drawBall() {
-            // Ball trail effect
-            ball.trail.forEach((pos, i) => {
-                ctx.save();
-                ctx.globalAlpha = i / ball.trail.length * 0.3;
-                ctx.fillStyle = '#fff';
-                ctx.beginPath();
-                ctx.arc(pos.x, pos.y, ball.radius * (i / ball.trail.length), 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
+            // Click outside modal to close
+            window.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.classList.remove('active');
+                }
             });
-            
-            // Ball shadow
-            ctx.fillStyle = 'rgba(0,0,0,0.2)';
-            ctx.beginPath();
-            ctx.ellipse(ball.x, ball.y + 15, ball.radius, ball.radius/3, 0, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Main ball
-            ctx.save();
-            ctx.translate(ball.x, ball.y);
-            ctx.rotate(ball.rotation);
-            
-            // White ball
-            ctx.fillStyle = '#fff';
-            ctx.beginPath();
-            ctx.arc(0, 0, ball.radius, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // Black pentagons
-            ctx.fillStyle = '#000';
-            const pattern = 5;
-            for (let i = 0; i < pattern; i++) {
-                const angle = (Math.PI * 2 / pattern) * i;
-                const px = Math.cos(angle) * ball.radius * 0.5;
-                const py = Math.sin(angle) * ball.radius * 0.5;
-                ctx.beginPath();
-                ctx.arc(px, py, ball.radius * 0.3, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            
-            ctx.restore();
         }
 
-        // Kick sequence
-        function kickBall() {
-            if (!goldy.kicking && Math.random() < 0.01) {
-                goldy.kicking = true;
-                goldy.kickFrame = 0;
-            }
+        // Initialize Stripe
+        function initializeStripe() {
+            stripe = Stripe('pk_live_51Li2EuHHRq5TjW22f3qkBVCiibv9CvogZuYTRa79BXS5ZhWxszEeBrBZZRhzrwPR4IzYelVSy4qxWfQ3wwWxWNhP00ZR6je4XQ');
+            elements = stripe.elements();
             
-            if (goldy.kicking) {
-                goldy.kickFrame++;
-                
-                // Contact with ball
-                if (goldy.kickFrame === 10) {
-                    ball.vx = 25;
-                    ball.vy = -10;
-                    ball.trail = [];
-                }
-                
-                // End kick animation
-                if (goldy.kickFrame > 20) {
-                    goldy.kicking = false;
-                }
-            }
-        }
-
-        // Update ball physics
-        function updateBall() {
-            if (ball.vx !== 0 || ball.vy !== 0) {
-                // Add to trail
-                ball.trail.push({x: ball.x, y: ball.y});
-                if (ball.trail.length > 10) {
-                    ball.trail.shift();
-                }
-                
-                // Update position
-                ball.x += ball.vx;
-                ball.y += ball.vy;
-                ball.vy += 0.5; // gravity
-                ball.rotation += 0.3;
-                
-                // Ground bounce
-                if (ball.y > 280) {
-                    ball.y = 280;
-                    ball.vy *= -0.6;
-                    ball.vx *= 0.9;
-                }
-                
-                // Check goal
-                if (ball.x > field.goalX && ball.x < field.goalX + field.goalWidth &&
-                    ball.y > field.goalY && ball.y < field.goalY + field.goalHeight) {
-                    // GOAL! Create celebration
-                    for (let i = 0; i < 30; i++) {
-                        const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
-                        particles.push(new Confetti(
-                            ball.x,
-                            ball.y,
-                            colors[Math.floor(Math.random() * colors.length)]
-                        ));
+            const style = {
+                base: {
+                    fontSize: '16px',
+                    fontFamily: '"Righteous", cursive',
+                    color: '#32325d',
+                    '::placeholder': {
+                        color: '#aab7c4'
                     }
-                    
-                    // Reset ball
-                    setTimeout(() => {
-                        ball.x = 380;
-                        ball.y = 280;
-                        ball.vx = 0;
-                        ball.vy = 0;
-                        ball.trail = [];
-                    }, 1000);
                 }
+            };
+            
+            cardElement = elements.create('card', { style: style });
+            cardElement.mount('#card-element');
+            
+            cardElement.on('change', function(event) {
+                const displayError = document.getElementById('cardError');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+        }
+
+        // Countdown timer
+        function updateCountdown() {
+            const targetDate = new Date('2025-09-01T23:59:59-07:00');
+            const now = new Date();
+            const difference = targetDate - now;
+            
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
                 
-                // Reset if off screen
-                if (ball.x > canvas.width + 50) {
-                    ball.x = 380;
-                    ball.y = 280;
-                    ball.vx = 0;
-                    ball.vy = 0;
-                    ball.trail = [];
-                }
-            }
-        }
-
-        // Draw sports equipment in background
-        function drawSportsEquipment() {
-            ctx.save();
-            ctx.globalAlpha = 0.3;
-            
-            // Basketball hoop in background
-            ctx.strokeStyle = '#FF6347';
-            ctx.lineWidth = 4;
-            ctx.beginPath();
-            ctx.arc(150, 100, 30, 0, Math.PI * 2);
-            ctx.stroke();
-            
-            // Baseball
-            ctx.fillStyle = '#fff';
-            ctx.beginPath();
-            ctx.arc(850, 80, 20, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.strokeStyle = '#FF0000';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(850, 80, 20, -0.5, 0.5);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(850, 80, 20, Math.PI - 0.5, Math.PI + 0.5);
-            ctx.stroke();
-            
-            // Tennis ball
-            ctx.fillStyle = '#CCFF00';
-            ctx.beginPath();
-            ctx.arc(100, 350, 15, 0, Math.PI * 2);
-            ctx.fill();
-            
-            ctx.restore();
-        }
-
-        // Animation loop
-        function animate() {
-            animationFrame++;
-            
-            // Clear and draw background
-            drawField();
-            drawSportsEquipment();
-            
-            // Update animations
-            kickBall();
-            updateBall();
-            goldy.legAngle += 0.1;
-            
-            // Draw everything
-            drawGoldy();
-            drawBall();
-            
-            // Update and draw particles
-            particles = particles.filter(particle => {
-                particle.update();
-                particle.draw();
-                return particle.opacity > 0;
-            });
-            
-            // Draw encouraging text
-            ctx.save();
-            ctx.font = 'bold 24px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillStyle = '#fff';
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 4;
-            
-            const messages = [
-                "PRACTICE MAKES PERFECT! ⚽",
-                "TEAMWORK MAKES THE DREAM WORK! 🏀",
-                "CHAMPIONS TRAIN HARD! 🏆",
-                "SUMMER 2025 - BE THERE! ☀️"
-            ];
-            
-            const messageIndex = Math.floor(animationFrame / 250) % messages.length;
-            ctx.strokeText(messages[messageIndex], canvas.width / 2, 50);
-            ctx.fillText(messages[messageIndex], canvas.width / 2, 50);
-            ctx.restore();
-            
-            requestAnimationFrame(animate);
-        }
-        
-        // Start animation
-        animate();
-        
-        // Form interactions
-        const sportSelect = document.getElementById('sport');
-        const otherSportContainer = document.getElementById('otherSportContainer');
-        const otherSportInput = document.getElementById('otherSport');
-        
-        sportSelect.addEventListener('change', function() {
-            if (this.value === 'Other') {
-                otherSportContainer.classList.add('show');
-                otherSportInput.required = true;
+                document.getElementById('days').textContent = String(days).padStart(2, '0');
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+                
+                // Update quick time display
+                document.getElementById('quickTime').textContent = 
+                    `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             } else {
-                otherSportContainer.classList.remove('show');
-                otherSportInput.required = false;
-                otherSportInput.value = '';
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                document.getElementById('quickTime').textContent = '00:00:00';
             }
-        });
-        
-        // Sound effects
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playSound(frequency, duration, type = 'square') {
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = frequency;
-            oscillator.type = type;
-            
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
         }
-        
-        // Add sound to form interactions
-        document.querySelectorAll('input, select').forEach(element => {
-            element.addEventListener('focus', () => {
-                playSound(800, 0.1);
-            });
-        });
-        
-        document.querySelector('.submit-btn').addEventListener('mousedown', () => {
-            // Whistle sound
-            playSound(2000, 0.1);
-            setTimeout(() => playSound(1500, 0.1), 50);
-        });
-        
-        // Function to show success animation
-        function showSuccessAnimation() {
-            const successMsg = document.getElementById('successMessage');
-            successMsg.style.display = 'block';
-            
-            // Hide after 3 seconds
-            setTimeout(() => {
-                successMsg.style.display = 'none';
-            }, 3000);
+
+        // Modal functions
+        function openBidModal() {
+            document.getElementById('bidModal').classList.add('active');
+            const minBid = Math.max(1, currentHighestBid + 1);
+            document.getElementById('bidAmount').min = minBid;
+            document.getElementById('bidAmount').value = minBid;
         }
-        
-        // Form submission handler for Shopify
-        document.getElementById('campForm').addEventListener('submit', async function(e) {
+
+        function closeBidModal() {
+            document.getElementById('bidModal').classList.remove('active');
+            document.getElementById('bidForm').reset();
+            document.getElementById('bidError').textContent = '';
+            document.getElementById('cardError').textContent = '';
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.remove('active');
+        }
+
+        // Toggle leaderboard
+        function toggleLeaderboard(e) {
+            e.stopPropagation();
+            const leaderboard = document.getElementById('leaderboard');
+            leaderboard.classList.toggle('collapsed');
+        }
+
+        // Handle bid submission
+        async function handleBidSubmit(e) {
             e.preventDefault();
             
-            const formData = new FormData(this);
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.innerHTML;
+            const submitButton = document.getElementById('submitBid');
+            submitButton.disabled = true;
+            submitButton.textContent = 'PROCESSING...';
             
-            // Show loading
-            submitBtn.innerHTML = '<span style="font-size: 0.8em">PROCESSING...</span>';
-            submitBtn.disabled = true;
+            const name = document.getElementById('bidderName').value;
+            const email = document.getElementById('bidderEmail').value;
+            const amount = parseInt(document.getElementById('bidAmount').value);
             
-            // Build cart URL parameters
-            const params = new URLSearchParams({
-                'id': SHOPIFY_CONFIG.variant_id,
-                'quantity': '1',
-                'properties[Player Name]': formData.get('properties[Player Name]'),
-                'properties[Age]': formData.get('properties[Age]'),
-                'properties[Phone Number]': formData.get('properties[Phone Number]'),
-                'properties[Email]': formData.get('properties[Email]'),
-                'properties[Sport]': formData.get('properties[Sport]')
-            });
-            
-            // Add other sport if selected
-            if (formData.get('properties[Sport]') === 'Other') {
-                const otherSport = formData.get('properties[Other Sport]');
-                if (otherSport) {
-                    params.append('properties[Other Sport]', otherSport);
-                }
+            // Validate bid amount
+            const minBid = Math.max(1, currentHighestBid + 1);
+            if (amount < minBid) {
+                document.getElementById('bidError').textContent = `Minimum bid is $${minBid}`;
+                submitButton.disabled = false;
+                submitButton.textContent = 'SUBMIT BID';
+                return;
             }
             
             try {
-                // Show success animation
-                showSuccessAnimation();
+                // Create payment intent
+                const response = await fetch('/.netlify/functions/create-payment-intent', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        amount: amount * 100, // Convert to cents
+                        name: name,
+                        email: email
+                    })
+                });
                 
-                // Play success sound
-                playSound(523, 0.15); // C
-                setTimeout(() => playSound(659, 0.15), 150); // E
-                setTimeout(() => playSound(784, 0.15), 300); // G
-                setTimeout(() => playSound(1047, 0.3), 450); // High C
+                const data = await response.json();
                 
-                // Create celebration
-                for (let i = 0; i < 50; i++) {
-                    setTimeout(() => {
-                        const colors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
-                        particles.push(new Confetti(
-                            Math.random() * canvas.width,
-                            canvas.height / 2,
-                            colors[Math.floor(Math.random() * colors.length)]
-                        ));
-                    }, i * 30);
+                if (data.error) {
+                    throw new Error(data.error);
                 }
                 
-                // Wait for animation
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                // Confirm payment
+                const result = await stripe.confirmCardPayment(data.clientSecret, {
+                    payment_method: {
+                        card: cardElement,
+                        billing_details: {
+                            name: name,
+                            email: email
+                        }
+                    }
+                });
                 
-                // Build the cart URL
-                const cartUrl = `https://kuibri-ev.myshopify.com/cart/add?${params.toString()}`;
-                
-                // Check if we're in an iframe
-                if (window.self !== window.top) {
-                    // We're in an iframe - open in parent window
-                    window.top.location.href = cartUrl;
-                } else {
-                    // We're not in an iframe - normal redirect
-                    window.location.href = cartUrl;
+                if (result.error) {
+                    throw new Error(result.error.message);
+                } else if (result.paymentIntent.status === 'requires_capture') {
+                    // Save to sheets
+                    await fetch('/.netlify/functions/save-to-sheets', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            amount: amount,
+                            paymentIntentId: result.paymentIntent.id
+                        })
+                    });
+                    
+                    // Update UI
+                    currentHighestBid = amount;
+                    totalBidCount++;
+                    document.getElementById('currentBid').textContent = amount;
+                    document.getElementById('totalBids').textContent = totalBidCount;
+                    
+                    // Show success
+                    closeBidModal();
+                    showSuccessAnimation();
+                    document.getElementById('successModal').classList.add('active');
+                    
+                    // Refresh leaderboard
+                    fetchLeaderboardData();
                 }
-                
             } catch (error) {
-                // If redirect fails due to iframe restrictions, open in new tab
-                console.error('Redirect failed, trying new tab:', error);
-                
-                const cartUrl = `https://kuibri-ev.myshopify.com/cart/add?${params.toString()}`;
-                
-                // Show message and open in new tab
-                alert('Opening checkout in a new tab. Please disable pop-up blocker if needed.');
-                window.open(cartUrl, '_blank');
-                
-                // Reset button
-                setTimeout(() => {
-                    submitBtn.innerHTML = originalText;
-                    submitBtn.disabled = false;
-                }, 3000);
+                document.getElementById('cardError').textContent = error.message;
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'SUBMIT BID';
             }
-        });
+        }
+
+        // Show success animation
+        function showSuccessAnimation() {
+            const emojis = ['🎉', '💰', '🎊', '✨', '🏆'];
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const emoji = document.createElement('div');
+                    emoji.className = 'success-emoji';
+                    emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    emoji.style.left = Math.random() * window.innerWidth + 'px';
+                    emoji.style.bottom = '50px';
+                    document.body.appendChild(emoji);
+                    
+                    setTimeout(() => emoji.remove(), 2000);
+                }, i * 200);
+            }
+        }
+
+        // Fetch leaderboard data
+        async function fetchLeaderboardData() {
+            try {
+                const response = await fetch('/.netlify/functions/get-leaderboard');
+                const data = await response.json();
+                
+                if (data.leaderboard && data.leaderboard.length > 0) {
+                    // Update current highest bid
+                    currentHighestBid = data.leaderboard[0].amount;
+                    document.getElementById('currentBid').textContent = currentHighestBid;
+                    
+                    // Update total bids
+                    totalBidCount = data.totalBids || data.leaderboard.length;
+                    document.getElementById('totalBids').textContent = totalBidCount;
+                    
+                    // Update leaderboard display
+                    const leaderboardContent = document.getElementById('leaderboardContent');
+                    leaderboardContent.innerHTML = '';
+                    
+                    // Get unique bidders
+                    const uniqueBidders = [];
+                    const seenNames = new Set();
+                    
+                    for (const bid of data.leaderboard) {
+                        if (!seenNames.has(bid.name) && uniqueBidders.length < 5) {
+                            seenNames.add(bid.name);
+                            uniqueBidders.push(bid);
+                        }
+                    }
+                    
+                    uniqueBidders.forEach((bid, index) => {
+                        const item = document.createElement('div');
+                        item.className = 'leaderboard-item';
+                        
+                        const badges = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+                        
+                        item.innerHTML = `
+                            <span class="rank-badge">${badges[index]}</span>
+                            <span class="bidder-name">${bid.name}</span>
+                            <span class="bid-amount-small">$${bid.amount}</span>
+                        `;
+                        
+                        leaderboardContent.appendChild(item);
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching leaderboard:', error);
+            }
+        }
     </script>
 </body>
 </html>
