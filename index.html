@@ -17,6 +17,8 @@
             background-color: #5C94FC;
             color: #000;
             overflow-x: hidden;
+            overflow-y: auto; /* CHANGED: Allow vertical scrolling */
+            min-height: 100vh; /* ADDED: Ensure minimum height */
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
@@ -41,6 +43,7 @@
             height: 100%;
             pointer-events: none;
             overflow: hidden;
+            z-index: -1; /* ADDED: Keep background behind content */
         }
 
         .floating-ball {
@@ -160,6 +163,11 @@
             margin: 20px auto;
             max-width: 600px;
             box-shadow: 0 6px 0 #000;
+            font-family: Arial, sans-serif !important; /* ADDED: Override pixel font */
+        }
+
+        .info-box * {
+            font-family: Arial, sans-serif !important; /* ADDED: Override pixel font for all children */
         }
 
         .info-box h3 {
@@ -215,7 +223,7 @@
         .form-section {
             max-width: 700px;
             margin: 40px auto;
-            padding: 20px;
+            padding: 20px 20px 60px 20px; /* CHANGED: Added more bottom padding */
         }
 
         .form-container {
@@ -359,6 +367,7 @@
             border-radius: 10px;
             padding: 20px;
             margin-top: 30px;
+            margin-bottom: 20px; /* ADDED: Bottom margin */
             text-align: center;
             font-family: Arial, sans-serif;
         }
@@ -384,6 +393,7 @@
             font-size: clamp(9px, 1.5vw, 14px);
             color: #fff;
             text-shadow: 2px 2px 0 #000;
+            margin-bottom: 20px; /* ADDED: Bottom margin */
         }
 
         /* Responsive */
