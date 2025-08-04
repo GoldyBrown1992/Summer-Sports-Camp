@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cool Cat Summer Sports Camp 2025</title>
+    <title>Cool Cat Summer Soccer Camp 2025</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         * {
@@ -151,6 +151,46 @@
             box-shadow: 0 4px 0 #000;
         }
 
+        /* Info Box */
+        .info-box {
+            background: rgba(255, 255, 255, 0.95);
+            border: 4px solid #000;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+            box-shadow: 0 6px 0 #000;
+        }
+
+        .info-box h3 {
+            font-family: Arial, sans-serif;
+            color: #FF6347;
+            font-size: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .info-item {
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .info-item strong {
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+
         /* Canvas Container */
         .canvas-container {
             width: 100%;
@@ -263,52 +303,14 @@
             box-shadow: 0 7px 0 #000;
         }
 
-        select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='4' stroke-linecap='square'%3e%3cpath d='M6 9l6 6 6-6'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 30px;
-            padding-right: 55px;
-        }
-
         /* Mobile specific input styles */
         @media (max-width: 768px) {
             input[type="text"],
             input[type="number"],
             input[type="tel"],
-            input[type="email"],
-            select {
+            input[type="email"] {
                 font-size: 16px !important; /* Forces 16px on mobile */
                 -webkit-text-size-adjust: none;
-            }
-        }
-
-        /* Sport Options Container */
-        .sport-options {
-            display: none;
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 3px solid #000;
-            border-radius: 10px;
-        }
-
-        .sport-options.show {
-            display: block;
-            animation: expand 0.3s ease-out;
-        }
-
-        @keyframes expand {
-            from {
-                opacity: 0;
-                transform: scaleY(0);
-                transform-origin: top;
-            }
-            to {
-                opacity: 1;
-                transform: scaleY(1);
             }
         }
 
@@ -350,6 +352,31 @@
             box-shadow: none;
         }
 
+        /* Payment Options */
+        .payment-info {
+            background: rgba(255, 255, 255, 0.8);
+            border: 3px solid #000;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .payment-info h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .payment-option {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
         /* Footer */
         .footer {
             text-align: center;
@@ -369,8 +396,12 @@
                 margin: 20px;
             }
             
-            input, select {
+            input {
                 padding: 15px;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -403,10 +434,10 @@
 <body>
     <div class="background-elements">
         <div class="floating-ball" style="left: 10%; animation-delay: 0s;">⚽</div>
-        <div class="floating-ball" style="left: 30%; animation-delay: 2s;">🏀</div>
-        <div class="floating-ball" style="left: 50%; animation-delay: 4s;">🏈</div>
-        <div class="floating-ball" style="left: 70%; animation-delay: 6s;">⚾</div>
-        <div class="floating-ball" style="left: 90%; animation-delay: 8s;">🏐</div>
+        <div class="floating-ball" style="left: 30%; animation-delay: 2s;">⚽</div>
+        <div class="floating-ball" style="left: 50%; animation-delay: 4s;">⚽</div>
+        <div class="floating-ball" style="left: 70%; animation-delay: 6s;">⚽</div>
+        <div class="floating-ball" style="left: 90%; animation-delay: 8s;">⚽</div>
         
         <div class="cloud" style="top: 20%; left: -100px; animation-delay: 0s;"></div>
         <div class="cloud" style="top: 60%; left: -100px; animation-delay: 10s;"></div>
@@ -414,18 +445,52 @@
     
     <header class="header">
         <div class="title-container">
-            <h1 class="title">Cool Cat</h1>
-            <h2 class="subtitle">SUMMER SPORTS CAMP</h2>
+            <h1 class="title">GOLDY BROWN</h1>
+            <h2 class="subtitle">SUMMER SOCCER CAMP</h2>
             <div class="tagline">2025 REGISTRATION OPEN!</div>
-            
-            <!-- Camp info added here -->
-            <div style="margin-top: 20px; font-family: Arial, sans-serif; color: #fff; text-align: center; font-size: 16px; line-height: 1.6;">
-                <div style="font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">DATES: August 16 - August 30</div>
-                <div style="font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">LOCATION: Queens Park</div>
-                <div style="font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">REGISTRATION FEE: $200</div>
-            </div>
         </div>
     </header>
+
+    <div class="info-box">
+        <h3>⚽ CAMP INFORMATION ⚽</h3>
+        <div class="info-grid">
+            <div class="info-item">
+                <strong>📅 DATES:</strong>
+                August 16 - August 30, 2025
+            </div>
+            <div class="info-item">
+                <strong>⏰ TIME:</strong>
+                10:00 AM - 11:00 AM<br>
+                Every Saturday & Sunday
+            </div>
+            <div class="info-item">
+                <strong>📍 LOCATION:</strong>
+                Queens Park South Field Diamond # 3
+            </div>
+            <div class="info-item">
+                <strong>💰 FEE:</strong>
+                $200 (Full Camp)
+            </div>
+            <div class="info-item">
+                <strong>👟 WHAT TO BRING:</strong>
+                Soccer cleats, water bottle, shin guards
+            </div>
+            <div class="info-item">
+                <strong>🎯 AGES:</strong>
+                5-18 years old (All skill levels welcome!)
+            </div>
+        </div>
+        <div style="margin-top: 20px; padding: 15px; background: #e8f5e9; border-radius: 8px;">
+            <strong style="color: #2e7d32;">WHAT YOUR CHILD WILL LEARN:</strong>
+            <ul style="list-style: none; padding: 10px 0; font-size: 13px; line-height: 1.8;">
+                <li>⚽ Professional soccer techniques & fundamentals</li>
+                <li>⚽ Team building & sportsmanship</li>
+                <li>⚽ Fitness & conditioning exercises</li>
+                <li>⚽ Game strategies & positioning</li>
+                <li>⚽ Fun drills & mini tournaments</li>
+            </ul>
+        </div>
+    </div>
 
     <div class="canvas-container">
         <canvas id="gameCanvas" width="1000" height="400"></canvas>
@@ -434,9 +499,9 @@
     <section class="form-section">
         <div class="form-container">
             <div class="sports-ball sports-ball-1">⚽</div>
-            <div class="sports-ball sports-ball-2">🏀</div>
+            <div class="sports-ball sports-ball-2">⚽</div>
             
-            <h2 class="form-title">JOIN THE TEAM!</h2>
+            <h2 class="form-title">REGISTER NOW!</h2>
             
             <form id="campForm" method="POST">
                 <div class="form-group">
@@ -446,11 +511,11 @@
                 
                 <div class="form-group">
                     <label for="age">AGE</label>
-                    <input type="number" id="age" name="properties[Age]" min="1" required>
+                    <input type="number" id="age" name="properties[Age]" min="5" max="18" required>
                 </div>
                 
                 <div class="form-group">
-                    <label for="phone">PHONE NUMBER</label>
+                    <label for="phone">PARENT/GUARDIAN PHONE</label>
                     <input type="tel" id="phone" name="properties[Phone Number]" required>
                 </div>
                 
@@ -459,35 +524,38 @@
                     <input type="email" id="email" name="properties[Email]" required>
                 </div>
                 
-                <div class="form-group">
-                    <label for="sport">FAVORITE SPORT</label>
-                    <select id="sport" name="properties[Sport]" required>
-                        <option value="">CHOOSE YOUR SPORT</option>
-                        <option value="Soccer">SOCCER ⚽</option>
-                        <option value="Basketball">BASKETBALL 🏀</option>
-                        <option value="Hockey">HOCKEY 🏒</option>
-                        <option value="Other">OTHER SPORT</option>
-                    </select>
-                    
-                    <div id="otherSportContainer" class="sport-options">
-                        <label for="otherSport">WHAT SPORT DO YOU LOVE?</label>
-                        <input type="text" id="otherSport" name="properties[Other Sport]" placeholder="Type your sport here...">
-                    </div>
-                </div>
-                
-                <button type="submit" class="submit-btn">LET'S GO!</button>
+                <button type="submit" class="submit-btn">REGISTER & PAY ONLINE</button>
             </form>
+            
+            <div class="payment-info">
+                <h4>PAYMENT OPTIONS</h4>
+                <div class="payment-option">
+                    <strong>Option 1:</strong> Pay online now with credit/debit card (Click button above)
+                </div>
+                <div class="payment-option">
+                    <strong>Option 2:</strong> E-Transfer to:<br>
+                    <strong style="color: #2e7d32;">gdhaliwal@goldrockenterprise.com</strong><br>
+                    <em style="font-size: 12px;">Please include child's name in e transfer message</em>
+                </div>
+                <div class="payment-option">
+                    <strong>Option 3:</strong> Cash payment at first session<br>
+                    <em style="font-size: 12px;">Please arrive 15 minutes early</em>
+                </div>
+                <p style="margin-top: 15px; font-size: 12px; color: #666;">
+                    Questions? Call/Text: (604) 704-0937
+                </p>
+            </div>
         </div>
     </section>
 
     <footer class="footer">
-        <p>© 2025 Cool Cat SUMMER SPORTS CAMP</p>
-        <p>PLAY HARD, HAVE FUN!</p>
+        <p>© 2025 Cool Cat SUMMER SOCCER CAMP</p>
+        <p>DEVELOPING CHAMPIONS ON AND OFF THE FIELD!</p>
     </footer>
 
     <div class="success-message" id="successMessage">
         <p>AWESOME!</p>
-        <p>SEE YOU ON THE FIELD!</p>
+        <p>CHECK YOUR EMAIL FOR DETAILS!</p>
     </div>
 
     <script>
@@ -854,32 +922,30 @@
             ctx.save();
             ctx.globalAlpha = 0.3;
             
-            // Basketball hoop in background
-            ctx.strokeStyle = '#FF6347';
-            ctx.lineWidth = 4;
-            ctx.beginPath();
-            ctx.arc(150, 100, 30, 0, Math.PI * 2);
-            ctx.stroke();
-            
-            // Baseball
+            // Soccer balls in background
             ctx.fillStyle = '#fff';
             ctx.beginPath();
-            ctx.arc(850, 80, 20, 0, Math.PI * 2);
+            ctx.arc(150, 100, 20, 0, Math.PI * 2);
             ctx.fill();
-            ctx.strokeStyle = '#FF0000';
+            ctx.strokeStyle = '#000';
             ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(850, 80, 20, -0.5, 0.5);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(850, 80, 20, Math.PI - 0.5, Math.PI + 0.5);
             ctx.stroke();
             
-            // Tennis ball
-            ctx.fillStyle = '#CCFF00';
+            ctx.fillStyle = '#fff';
             ctx.beginPath();
-            ctx.arc(100, 350, 15, 0, Math.PI * 2);
+            ctx.arc(850, 80, 15, 0, Math.PI * 2);
             ctx.fill();
+            ctx.strokeStyle = '#000';
+            ctx.stroke();
+            
+            // Soccer goal posts
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(100, 150);
+            ctx.lineTo(100, 100);
+            ctx.lineTo(150, 100);
+            ctx.stroke();
             
             ctx.restore();
         }
@@ -917,9 +983,9 @@
             ctx.lineWidth = 4;
             
             const messages = [
-                "PRACTICE MAKES PERFECT! ⚽",
-                "TEAMWORK MAKES THE DREAM WORK! 🏀",
-                "CHAMPIONS TRAIN HARD! 🏆",
+                "KICK IT LIKE GOLDY! ⚽",
+                "SOCCER SKILLS LOADING... ⚽",
+                "CHAMPIONS TRAIN EARLY! ⚽",
                 "SUMMER 2025 - BE THERE! ☀️"
             ];
             
@@ -933,22 +999,6 @@
         
         // Start animation
         animate();
-        
-        // Form interactions
-        const sportSelect = document.getElementById('sport');
-        const otherSportContainer = document.getElementById('otherSportContainer');
-        const otherSportInput = document.getElementById('otherSport');
-        
-        sportSelect.addEventListener('change', function() {
-            if (this.value === 'Other') {
-                otherSportContainer.classList.add('show');
-                otherSportInput.required = true;
-            } else {
-                otherSportContainer.classList.remove('show');
-                otherSportInput.required = false;
-                otherSportInput.value = '';
-            }
-        });
         
         // Sound effects
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -971,7 +1021,7 @@
         }
         
         // Add sound to form interactions
-        document.querySelectorAll('input, select').forEach(element => {
+        document.querySelectorAll('input').forEach(element => {
             element.addEventListener('focus', () => {
                 playSound(800, 0.1);
             });
@@ -1014,16 +1064,8 @@
                 'properties[Age]': formData.get('properties[Age]'),
                 'properties[Phone Number]': formData.get('properties[Phone Number]'),
                 'properties[Email]': formData.get('properties[Email]'),
-                'properties[Sport]': formData.get('properties[Sport]')
+                'properties[Camp Type]': 'Summer Soccer Camp 2025'
             });
-            
-            // Add other sport if selected
-            if (formData.get('properties[Sport]') === 'Other') {
-                const otherSport = formData.get('properties[Other Sport]');
-                if (otherSport) {
-                    params.append('properties[Other Sport]', otherSport);
-                }
-            }
             
             try {
                 // Show success animation
