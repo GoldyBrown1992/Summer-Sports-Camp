@@ -946,12 +946,7 @@
         // Form submission handler for Shopify
         document.getElementById('campForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-           if (SHOPIFY_CONFIG.variant_id === '50948336910628') {
-                alert('Please configure your Shopify variant ID first!');
-                return;
-            }
-            
+        
             const formData = new FormData(this);
             const playerName = formData.get('properties[Player Name]');
             
