@@ -455,9 +455,10 @@
     <script>
         // IMPORTANT: Configure your Shopify settings here
         const SHOPIFY_CONFIG = {
-            store_domain: 'kuibri-ev.myshopify.com',
-            variant_id: 'YOUR_VARIANT_ID_HERE', // ← YOU NEED TO REPLACE THIS!
-            redirect_to_cart: true
+    store_domain: 'kuibri-ev.myshopify.com',
+    variant_id: '50948336910628', // ← Your actual variant ID
+    redirect_to_cart: true
+};
         };
 
         // Canvas Animation
@@ -947,7 +948,7 @@
         document.getElementById('campForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (SHOPIFY_CONFIG.variant_id === 'YOUR_VARIANT_ID_HERE') {
+           if (SHOPIFY_CONFIG.variant_id === '50948336910628') {
                 alert('Please configure your Shopify variant ID first!');
                 return;
             }
